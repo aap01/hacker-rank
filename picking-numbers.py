@@ -25,6 +25,8 @@ def pickingNumbers(a):
         while j < len(x) and abs(x[j] - x[i]) <= 1:
             j += 1
         res = max(res, j - i)
+        while i + 1 < len(x) and a[i] == a[i + 1]:  # Skipping repeats
+            i += 1
         i += 1
     return res
 
