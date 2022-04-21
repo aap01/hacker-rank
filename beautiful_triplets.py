@@ -35,20 +35,20 @@ def beautifulTriplets(d, arr):
         return 0
     res = 0
     # O(n)
-    # di = dict()
-    # for item in arr:
-    #     if item not in di:
-    #         di[item] = 0
-    #     di[item] += 1
-    # for item in arr:
-    #     if item + d in di and item + 2*d in di:
-    #         res += 1
-    # return res
-    # O(logn)
+    di = dict()
     for item in arr:
-        if binSearch(arr, item + d, 0, len(arr) - 1) and binSearch(arr, item + 2 * d, 0, len(arr) - 1):
+        if item not in di:
+            di[item] = 0
+        di[item] += 1
+    for item in arr:
+        if item + d in di and item + 2*d in di:
             res += 1
     return res
+    # O(nlogn)
+    # for item in arr:
+    #     if binSearch(arr, item + d, 0, len(arr) - 1) and binSearch(arr, item + 2 * d, 0, len(arr) -1 ):
+    #         res += 1
+    # return res
 
 
 if __name__ == '__main__':
