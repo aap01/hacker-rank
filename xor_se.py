@@ -51,33 +51,65 @@ def xorSequence(l, r):
     # Al ^ Al+1 ^ Al+2 ^ Al+3 ^ Al+4
     # = Al ^ Al+1 ^ Al+2 ^ Al+3 ^ ((Al+3)^l+4)
     # = Al ^ Al+1 ^ Al+2 ^ (l+4)
-    # = Al ^ Al+1 ^ (Al+1 ^ l+2) ^ L+4
-    # = Al ^ l+2 ^ L+4
+    # = Al ^ Al+1 ^ (Al+1 ^ l+2) ^ l+4
+    # = Al ^ l+2 ^ l+4
 
     # So if there are even number of terms in l->r
     # res = l+1 ^ l+3 ^ .. r
     # else
     # res = Al ^ l+2 ^ l+4
 
-    indexOfZero = (l // 4) * 4 - 1
-    if indexOfZero < 0:
-        indexOfZero = 0
-    al = 0
-    res = 0
-    if (r - l + 1) % 2 == 0:
-        k = l + 1
-        while k <= r:
-            res ^= k
-            k += 2
-    else:
-        for i in range(indexOfZero + 1, l + 1):
-            al = al ^ i
-        res = al
-        k = l + 2
-        while k <= r:
-            res ^= k
-            k += 2
-    return res
+    # TLE
+    # indexOfZero = (l // 4) * 4 - 1
+    # if indexOfZero < 0:
+    #     indexOfZero = 0
+    # al = 0
+    # res = 0
+    # if (r - l + 1) % 2 == 0:
+    #     k = l + 1
+    #     while k <= r:
+    #         res ^= k
+    #         k += 2
+    # else:
+    #     for i in range(indexOfZero + 1, l + 1):
+    #         al = al ^ i
+    #     res = al
+    #     k = l + 2
+    #     while k <= r:
+    #         res ^= k
+    #         k += 2
+    # return res
+
+    #O(1)
+    def elementAt(i):
+        indexOfZero = (i // 4) * 4 - 1
+        if indexOfZero < 0:
+            indexOfZero = 0
+        ai = 0
+        for j in range(indexOfZero + 1, i + 1):
+            ai = ai ^ j
+        return ai
+    # XOR-SUM of 8 elements is 0
+
+    def xorSum(startI, endI):
+        ei = elementAt(startI)
+        si = ei
+        for i in range(startI + 1, endI + 1):
+            ei ^= i
+            si ^= ei
+        return si
+    # find xorSum of elements starting from l to k-1
+    # where k is the start of next group of 8s which xorSum to 0
+    k = 8 + (l // 8) * 8
+    if k >= r:
+        return xorSum(l, r)
+
+    sl = xorSum(l, k - 1)
+    # find xorSum of elements starting from k to r
+    # where k - 1 is the end of previous group of 8s which xorSum to 0
+    k = (r // 8) * 8
+    sr = xorSum(k, r)
+    return (sl ^ sr) if k > l else sr
 
 
 if __name__ == '__main__':
